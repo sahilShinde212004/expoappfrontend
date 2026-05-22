@@ -16,7 +16,7 @@ export default function RootLayout() {
         setLoading(false);
         return;
       }
-      fetch('https://railway.com/project/a5774716-4a09-4ffa-8e3f-2951a7ec2fa5?environmentId=19399239-9a05-4cf0-8ae6-cbcf8aa5f722/api/auth/me', {
+      fetch('https://app-backend-qhnr.onrender.com/api/auth/me', {
         headers: { Authorization: `Bearer ${token}` }
       })
       .then(res => {

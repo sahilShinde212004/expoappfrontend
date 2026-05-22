@@ -71,7 +71,25 @@ export default function Dashboard() {
       const permission = await Audio.requestPermissionsAsync();
       if (permission.status === 'granted') {
         await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
-        const { recording } = await Audio.Recording.createAsync(Audio.RecordingOptionsPresets.HIGH_QUALITY);
+        const { recording } = await Audio.Recording.createAsync({
+          ios: {
+            extension: '.wav',
+            outputFormat: 'linearPCM',
+            audioQuality: 1,
+            sampleRate: 48000,
+            numberOfChannels: 2,
+            bitRate: 256000,
+          },
+          android: {
+            extension: '.wav',
+            outputFormat: 1,
+            audioEncoder: 1,
+            sampleRate: 48000,
+            numberOfChannels: 2,
+            bitRate: 256000,
+          },
+          web: {},
+        });
         setRecording(recording);
         setElapsed(0);
         setStatus('recording');
@@ -113,11 +131,11 @@ export default function Dashboard() {
     try {
       const token = await AsyncStorage.getItem('token');
       const formData = new FormData();
-      formData.append('audio', { uri: recordingUri, name: 'lecture.m4a', type: 'audio/m4a' } as any);
+      formData.append('audio', { uri: recordingUri, name: 'lecture.wav', type: 'audio/wav' } as any);
       formData.append('className', selectedClass);
       formData.append('subjectName', selectedSubject);
 
-      const res = await fetch('https://railway.com/project/a5774716-4a09-4ffa-8e3f-2951a7ec2fa5?environmentId=19399239-9a05-4cf0-8ae6-cbcf8aa5f722/api/upload-lecture', {
+      const res = await fetch('https://app-backend-qhnr.onrender.com/api/upload-lecture', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
         body: formData,

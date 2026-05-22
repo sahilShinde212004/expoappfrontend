@@ -38,7 +38,7 @@ export default function LoginScreen() {
         const endpoint = mode === 'login' ? '/api/auth/login' : '/api/auth/signup';
         const payload = mode === 'signup' ? { name, email, password } : { email, password };
         
-        const res = await fetch(`https://railway.com/project/a5774716-4a09-4ffa-8e3f-2951a7ec2fa5?environmentId=19399239-9a05-4cf0-8ae6-cbcf8aa5f722${endpoint}`, {
+        const res = await fetch(`https://app-backend-qhnr.onrender.com${endpoint}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
